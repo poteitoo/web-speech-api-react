@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 const NativeSpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -8,20 +8,35 @@ export const App = () => {
   const recognition = useMemo(() => {
     const Recognition = new NativeSpeechRecognition();
     Recognition.lang = "ja-JP";
-    Recognition.interimResults = true;
+    Recognition.interimResults = false;
     Recognition.continuous = true;
-    Recognition.onspeechend = (e) => {
-      console.log("onspeechend", e.target);
+    // start
+    Recognition.onstart = (_) => {
+      console.log("onstart");
     };
-    Recognition.onsoundstart = (e) => {
-      console.log(e);
+    Recognition.onaudiostart = (_) => {
+      console.log("onaudiostart");
     };
-    Recognition.onstart = (e) => {
-      console.log(e);
+    Recognition.onsoundstart = (_) => {
+      console.log("onsoundstart");
     };
-    Recognition.onaudiostart = (e) => {
-      console.log(e);
+    Recognition.onaudiostart = (_) => {
+      console.log("onaudiostart");
     };
+    // end
+    Recognition.onend = (_) => {
+      console.log("onend");
+    };
+    Recognition.onaudioend = (_) => {
+      console.log("onaudioend");
+    };
+    Recognition.onsoundend = (_) => {
+      console.log("onsoundend");
+    };
+    Recognition.onaudioend = (_) => {
+      console.log("onaudioend");
+    };
+    // result
     Recognition.onresult = (e) => {
       const transcript = Array.from(e.results)
         .map((result) => result[0])
@@ -32,10 +47,6 @@ export const App = () => {
     };
     return Recognition;
   }, [window]);
-
-  useEffect(() => {
-    console.log(recognition);
-  }, [recognition]);
 
   return (
     <div>
